@@ -6,7 +6,7 @@
   <li><%= msg %></li>
   <% end %>
 <% end %>
-  <%= form_for @user do |f| %>
+  <%= form_for(@user,:html => {role: "form"}) do |f| %>
   <p>
     <%= f.label :username %> <br />
     <%= f.text_field :username %>
@@ -15,7 +15,10 @@
      <%= f.label :email %> <br />
      <%= f.email_field :email %>
    </p>
-
+   <p>
+     <%= f.label :password %>
+     <%= f.password_field :password %>
+</p>
 
    <%= f.submit %>
 <% end %>
