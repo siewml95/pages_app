@@ -5,19 +5,30 @@
   <li><%= msg %></li>
   <% end %>
 <% end %>
-  <%= form_for(@user,:html => {role: "form"}) do |f| %>
-  <p>
-    <%= f.label :username %> <br />
-    <%= f.text_field :username %>
-   </p>
-   <p>
-     <%= f.label :email %> <br />
-     <%= f.email_field :email %>
-   </p>
-   <p>
-     <%= f.label :password %>
-     <%= f.password_field :password %>
-</p>
 
-  <%= f.submit(@user.new_record? ? "Sign up" : "Update Account") %>
+
+<div class="wrapper" style="margin-top: 80px; margin-bottom: 80px;">
+
+  <%= form_for(@user,:html => {role: "form",class:"form-signin"}) do |f| %>
+  <h2 class="form-signin-heading">
+    <% if @user.new_record?  %>
+      Sign up
+    <% else %>
+     Edit Profile
+    <%end%>
+  </h2>
+
+  <%= f.text_field :username ,:class => "form-control" ,:placeholder => "User Name"%>
+
+  <%= f.email_field :email ,:class => "form-control" ,:placeholder => "Email Address" %>
+
+  <%= f.password_field :password ,:class => "form-control" , :placeholder => "Password"%>
+
+  <%= f.submit @user.new_record? ? "Sign up" : "Update Account" , :class => "btn btn-lg btn-primary btn-block" %>
+   <% if @user.new_record?  %>
+      <%= link_to 'Login', root_path %>
+
+    <%end%>
+
 <% end %>
+  </div>

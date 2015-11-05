@@ -1,12 +1,14 @@
-  <div class="well">
-    <%= link_to "New Product", new_article_path, remote: true, class: "btn btn-primary" %>
+<div class="well" style="min-height:75px">
+  <%= link_to "New List Item", new_article_path, remote: true, class: "btn btn-primary" , :style => "float:right" %>
   </div>
   <div class="new-product"></div>
-<table>
+<table class="table table-striped">
   <thead>
   <tr>
     <th>Title</th>
     <th>Description</th>
+    <th>Deadline</th>
+
   </tr>
   </thead>
 

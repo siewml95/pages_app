@@ -1,15 +1,15 @@
-<h1>Log in</h1>
 
-  <%= form_for(:session,:html => {role: "form"}) do |f| %>
+<div class="wrapper" style="margin-top: 80px; margin-bottom: 80px;">
 
-   <p>
-     <%= f.label :email %> <br />
-     <%= f.email_field :email %>
-   </p>
-   <p>
-     <%= f.label :password %>
-     <%= f.password_field :password %>
-</p>
+  <%= form_for(:session,:html => {role: "form",class:"form-signin"}) do |f| %>
+   <h2 class="form-signin-heading">Please login</h2>
 
-  <%= f.submit("Login") %>
+
+     <%= f.email_field :email ,:class => "form-control" ,:placeholder => "Email Address"%>
+
+  <%= f.password_field :password ,:class => "form-control" , :placeholder => "Password"%>
+
+  <%= f.submit "Login" , :class => "btn btn-lg btn-primary btn-block" %>
+    <%= link_to 'Register Now', signup_path %>
+
 <% end %>

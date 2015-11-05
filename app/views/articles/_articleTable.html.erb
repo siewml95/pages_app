@@ -1,5 +1,9 @@
 <% obj.each do |article| %>
-  <tr>
+<% if article.deadline < Time.now %>
+  <tr style="background-color:red; color:white;">
+    <% else %>
+    <tr class="hello">
+      <% end %>
   <td><%= article.title %></td>
   <td><%= article.description %></td>
     <td><%= article.deadline %></td>

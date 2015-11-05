@@ -51,12 +51,15 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:article_id])
 
   end
+
+
   def destroy
     @user = @article.user
     @article.destroy
     flash[:notice] = "Article was successfully updated"
     #redirect_to user_path(@user)
   end
+
 
 
   private
@@ -77,7 +80,16 @@ class ArticlesController < ApplicationController
       flash[:danger] = "You can only edit or delete you own articles"
       redirect_to root_path
     end
+
+
+
   end
+
+
+
+
+
+
 
 
 

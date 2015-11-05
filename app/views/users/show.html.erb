@@ -1,11 +1,11 @@
-<h1>Welcome to <%= @user.username %>'s page</h1>
-<%= link_to 'Log out', logout_path,method: :delete %>
-<%= gravatar_for @user, size:150%>
-<h4><%= @user.username %>'s articles</h4>
-<%= link_to "Create new article", new_article_path %>
+<div class="container">
+  <%= gravatar_for @user, size:150 ,:class=> "float-left"%>
+<h2><%= @user.username %></h2>
+
 
 <%=render 'articles/article', obj:@user_articles %>
 <%= will_paginate @user_articles %>
+</div>
 
 
 
