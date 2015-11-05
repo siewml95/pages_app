@@ -2,6 +2,7 @@
   <tr>
   <td><%= article.title %></td>
   <td><%= article.description %></td>
+    <td><%= article.deadline %></td>
     <td><%= link_to "Edit", edit_article_path(article), remote: true, class: "btn btn-default" %></td>
     <td><%= link_to "Delete", article_delete_path(article), remote: true, class: "btn btn-danger" %></td>
 
