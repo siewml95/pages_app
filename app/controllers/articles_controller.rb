@@ -1,23 +1,23 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:edit,:update,:show,:destroy]
-  before_action :require_user,except: [:index,:show]
-  before_action :require_same_user, only:[:edit,:update,:destroy]
-  def index
-    @articles = Article.paginate(page: params[:page],per_page:1)
-  end
+  before_action :require_same_user, only:[:edit,:update,:destroy,:show]
+
 
   def new
     @article = Article.new
   end
-
+  
+  
+    
   def create
     @article = Article.new(article_params)
     @article.user  = current_user
-    if @article.save
+
+   if @article.save
       flash[:notice] = "Article was successfully created"
-      redirect_to article_path(@article)
+      #redirect_to article_path(@article)
     else
-      render 'new'
+     render 'new'
     #render plain: params[:article].inspect
    # @article = Article.new(article_params)
   #  @article.save
@@ -26,25 +26,36 @@ class ArticlesController < ApplicationController
   end
 
   def show
-
+    @article = Article.find(params[:id])
   end
 
   def edit
+    @article = Article.find(params[:id])
   end
 
   def update
-    if @article.update(article_params)
-      flash[:notice] = "Article was successfully updated"
-      redirect_to article_path(@article)
-    else
-      render 'edit'
-    end
+      @article = Article.all
+      @article= Article.find(params[:id])
+
+      @article.update_attributes(article_params)
+    # if @article.update(article_params)
+    #  flash[:notice] = "Article was successfully updated"
+    #  @article = Article.all
+
+      #redirect_to article_path(@article)
+   # else
+    #  render 'edit'
+ #   end
   end
 
+  def delete
+    @article = Article.find(params[:product_id])
+  end
   def destroy
+    @user = @article.user
     @article.destroy
     flash[:notice] = "Article was successfully updated"
-    redirect_to articles_path
+    #redirect_to user_path(@user)
   end
 
 
