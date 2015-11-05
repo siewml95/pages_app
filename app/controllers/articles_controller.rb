@@ -1,14 +1,14 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:edit,:update,:show,:destroy]
-  before_action :require_same_user, only:[:edit,:update,:destroy,:show]
+  before_action :require_same_user, only:[:edit,:update,:destroy,:show,]
 
 
   def new
     @article = Article.new
   end
-  
-  
-    
+
+
+
   def create
     @article = Article.new(article_params)
     @article.user  = current_user
@@ -36,7 +36,6 @@ class ArticlesController < ApplicationController
   def update
       @article = Article.all
       @article= Article.find(params[:id])
-
       @article.update_attributes(article_params)
     # if @article.update(article_params)
     #  flash[:notice] = "Article was successfully updated"
@@ -49,7 +48,8 @@ class ArticlesController < ApplicationController
   end
 
   def delete
-    @article = Article.find(params[:product_id])
+    @article = Article.find(params[:article_id])
+
   end
   def destroy
     @user = @article.user
