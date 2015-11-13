@@ -1,0 +1,126 @@
+extends layout
+
+block content
+  .row.row-centered.background-header(style="background-image: url('/images/index_background.jpg');")
+    h1.text-center.col-md-8.col-md-push-2.col-sm-12.col-xs-12 Everyone has a role in creating a better future
+
+  .container-fluid
+    .row.row-centered
+      .col-md-10.col-md-offset-1.col-sm-12.col-xs-12.content
+        
+        .col-md-10.col-md-push-1.col-sm-12.col-xs-12.no-gutter
+          p.liner.text-center 
+            |VOLO is an online platform that brings individuals, companies and charities together to create social change.
+        
+        .col-md-12.col-sm-12.col-xs.12.break
+
+        .col-md-12.col-sm-12.col-xs-12.text-center
+          .col-md-4.col-sm-4.col-xs-12
+            img.pictogram(src="/images/do_good.svg", alt="VOLO do good")
+            h4 DO GOOD
+
+          .col-md-4.col-sm-4.col-xs-12
+            img.pictogram(src="/images/skills.svg", alt="VOLO skills")
+            h4 BUILD SKILLS
+
+          .col-md-4.col-sm-4.col-xs-12
+            img.pictogram(src="/images/connect.svg", alt="VOLO connect")
+            h4 CONNECT
+
+        .col-md-12.col-sm-12.col-xs.12.break
+
+        .col-md-12.col-sm-12.col-xs-12.text-center
+          a(href="/register", class="btn sharp btn-lg btn-primary big-btn") Volunteer with volo
+
+        .col-md-12.col-sm-12.col-xs.12.break
+        .col-md-12.col-sm-12.col-xs.12.break
+
+        .col-md-10.col-md-push-1.col-sm-12.col-xs-12
+          p.text-justify
+            |At VOLO we believe that social responsibility is everyone’s responsibility and that a small commitment from many can provide a sustainable solution for creating long-term social impact.  
+            |We also believe that social progress should benefit everyone involved, so when you volunteer with VOLO, you not only give back, but you also get ahead!
+        .col-md-12.col-sm-12.col-xs.12.break
+
+    .row.row-centered.colored
+      .col-md-10.col-md-offset-1.col-sm-12.col-xs-12.content
+        .col-md-12.col-sm-12.col-xs-12.hiw
+          h3.text-center.col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12 How it works
+
+          .col-md-10.col-sm-8.col-xs-12.col-md-offset-1
+
+            .col-md-6.col-sm-6.col-xs-12.text-center
+              .col-md-5.col-sm-5.col-xs-12
+                img.pictogram(src="/images/create.svg", alt="VOLO create")
+              h4.col-md-7.col-sm-7.col-xs-12.text-left 1. Create your VOLO volunteer profile
+
+            .col-md-6.col-sm-6.col-xs-12.text-center
+              .col-md-5.col-sm-5.col-xs-12
+                img.pictogram(src="/images/upload.svg", alt="VOLO upload")
+              h4.col-md-7.col-sm-7.col-xs-12.text-left 2. Upload your volunteering activities
+
+            .col-md-6.col-sm-6.col-xs-12.text-center
+              .col-md-5.col-sm-5.col-xs-12
+                img.pictogram(src="/images/blocks_dotted.svg", alt="VOLO skills")
+              h4.col-md-7.col-sm-7.col-xs-12.text-left 3. Identify skills you’ve gained
+
+            .col-md-6.col-sm-6.col-xs-12.text-center
+              .col-md-5.col-sm-5.col-xs-12
+                img.pictogram(src="/images/promote.svg", alt="VOLO promote")
+              h4.col-md-7.col-sm-7.col-xs-12.text-left 4. Promote your skills to employers on your volunteer profile
+          
+          .col-md-12.col-sm-12.break
+
+          .col-md-10.col-md-push-1.col-sm-12.col-xs-12
+            p.text-justify
+              |You can browse VOLO’s non-profit partners to identify valuable skill-based volunteer opportunities in your community.
+              |You can also opt in to receive weekly notifications of upcoming activities that might interest you. 
+        
+        .col-md-12.col-sm-12.break
+        .col-md-12.col-sm-12.break
+        .col-md-12.col-sm-12.col-xs-12.text-center
+          a(href="/register", class="btn sharp btn-lg btn-primary big-btn") Volunteer with volo
+        .col-md-12.col-sm-12.col-xs-12.break
+
+    .row.row-centered.not_colored
+      .col-md-10.col-md-offset-1.content.col-sm-12.col-xs-12
+        .col-md-12.col-sm-12.col-xs-12
+          h3.text-center.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-12 Our nonprofit partners
+          .col-md-4.col-sm-6.col-xs-12.unique_volunteer
+            a(href="/nonprofit/ageuk_eastlondon")
+              .col-md-12.col-sm-12.col-xs-12.user-bg.text-center
+                img(src="/images/nonprofit/logo_age_uk_east_london.jpg", alt="logo AgeUK")
+                p.volunteer_name Age UK East London
+          .col-md-4.col-sm-6.col-xs-12.unique_volunteer
+            a(href="/nonprofit/mosaic")
+              .col-md-12.col-sm-12.col-xs-12.user-bg.text-center
+                img(src="/images/nonprofit/logo_mosaic.jpg", alt="logo Mosaic")
+                p.volunteer_name Mosaic
+          .col-md-4.col-sm-6.col-xs-12.unique_volunteer
+            a(href="/nonprofit/challenge_africa")
+              .col-md-12.col-sm-12.col-xs-12.user-bg.text-center
+                img(src="/images/nonprofit/logo_challenge_africa.jpg", alt="logo Challenge Africa")
+                p.volunteer_name Challenge Africa
+      
+    .row.row-centered.colored
+      .col-md-10.col-md-offset-1.content.col-sm-12.col-xs-12
+        .col-md-12.col-sm-12.col-xs-12
+          h3.text-center.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-12 Check out the VOLO Volunteers that are making a difference:
+          .col-md-10.col-md-offset-1.col-sm-12.col-xs-12.volunteer_list
+
+    //- .row.row-centered.colored
+    //-   .col-md-10.col-md-offset-1.col-sm-12.col-xs-12.content
+    //-     .col-md-12.col-xs-12.col-sm-12  
+    //-       h3.text-center.col-md-4.col-md-offset-4.col-sm-8.col-sm-offset-2.col-xs-12 Find a volunteer:
+    //-       .col-md-6.col-md-offset-3.col-xs-12.col-sm-12
+    //-         form(action="/volunteer/search")
+    //-           .input-group.col-md-12.col-xs-12.col-sm-12
+    //-             input(type="text", name="search", class="form-control", placeholder="Type a volunteer name" )
+    //-             span.input-group-btn
+    //-               button(class="btn btn-primary btn-search", type="button")
+    //-                 i.glyphicon.glyphicon-search
+        
+    //-     .col-md-12.col-sm-12.col-xs-12.break
+
+
+    
+    script(src="/javascripts/indexPage.min.js")

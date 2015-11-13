@@ -1,0 +1,59 @@
+extends ../layout
+
+block content
+
+  div.container-fluid
+    div.row.row-centered
+      div.col-md-10.col-md-offset-1.content
+        .col-md-12.col-sm-12.col-xs-12
+          h3 Volunteer results
+
+          .col-md-6.col-md-offset-3.col-xs-12.col-sm-12
+            form(action="/volunteer/search")
+              .input-group.col-md-12.col-xs-12.col-sm-12
+                input(type="text", name="search", class="form-control", placeholder="Type a volunteer name", value="" )
+                span.input-group-btn
+                  button(class="btn btn-primary btn-search", type="button")
+                    i.glyphicon.glyphicon-search
+
+
+          .col-md-12.col-xs-12.col-sm-12.break
+          
+          if (results == null) 
+            .col-md-10.col-md-offset-1.col-sm-12.col-xs-12.search_result.text-center
+                h3.col-md-12.col-sm-12.col-xs-12 No result found
+                p Your search must contain more than 3 characters.
+          else
+            each result in results
+              .col-md-10.col-md-offset-1.col-sm-12.col-xs-12.search_result
+                .col-md-2.col-xs-12.col-sm-2.user-md.text-center
+                  -if (result.photo.cropedPath)
+                    img(src="#{result.photo.cropedPath}")
+                  -else
+                    img(src="#{result.photo.originalPath}")
+                
+                .col-md-8.col-xs-12.col-sm-8
+                  p.volunteer_name #{result.first_name} #{result.last_name}
+                  - if (result.position == 'student' && result.university)
+                    p <em>#{capitalize(result.position)} at #{capitalize(result.university)}</em>
+                  - else if (result.position == 'student' && !result.university)
+                    p <em>#{capitalize(result.position)}</em>
+                  - else if (result.position == 'employed' && result.company)
+                    p <em>#{capitalize(result.position)} at #{capitalize(result.company)}</em>
+                  - else if (result.position == 'employed' && !result.company)
+                    p <em>#{capitalize(result.position)}</em>
+                  - else if (result.position == 'unemployed')
+                    p <em>#{capitalize(result.position)}</em>
+                  
+                  - if (result.skills && result.skills.length > 0)
+                    p Main skills: 
+                      each skill, j in result.skills
+                        if (j == 0)
+                          span <em>#{skill._id.name}</em>
+                        else if (j < 3)
+                          span , <em>#{skill._id.name}</em>
+
+                .col-md-2.col-sm-2.col-xs-12.text-center
+                  a(href="/volunteer/#{result._id}", class="btn sharp btn-lg first-btn btn-primary") View
+
+      script(src="/javascripts/searchPage.min.js")

@@ -1,0 +1,45 @@
+extends layout
+
+block content
+    if messages.error
+        .alert.alert-danger
+            div= messages.error
+    if messages.info
+        .alert.alert-info
+            div= messages.info
+    if messages.success
+        .alert.alert-success
+            div= messages.success
+    div.container-fluid
+        div.row.row-centered
+            div.col-md-10.col-md-offset-1.content
+                .col-md-12
+                    h3 Create your account with VOLO
+                    if (info && info != '')
+                        .alert.alert-danger
+                            div= info
+                    form(role='form', action="/register",method="post", class="col-md-7 no-gutter")
+                        span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate.hidden.text-center.col-md-8.col-sm-8.col-xs-12
+                        .form-group
+                            input(type="hidden", value="volunteer", name="usertype")
+                        .form-group
+                            input.form-control(type='text', name="first_name", pattern="[a-zA-Z ]+", required, placeholder='Enter your first name')
+                        .form-group
+                            input.form-control(type='text', name="last_name", pattern="[a-zA-Z ]+", required, placeholder='Enter your last name')
+                        .form-group
+                            input.form-control(type='text', name="username", pattern="\\w+", required, placeholder='Enter your username')
+                        .form-group
+                            input.form-control(type='text', name="email", required, placeholder='email@domain.com')
+                        .form-group
+                            input.form-control(type='password', name="password", id="password", placeholder='Password', pattern='(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}', title="Password must contain at least 6 characters, including UPPER/lowercase and numbers" \
+                            onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : '');")
+                        .form-group
+                            label
+                                input(type='checkbox', name="term", required)
+                                |  I have read and agree to the
+                                a(href="/register/terms-and-conditions" "target=_black")
+                                    | Terms and Conditions
+                        .form-group
+                            button.btn.btn-primary(type='submit', id="submit") Register
+
+                    script(src="/javascripts/loginPage.min.js")

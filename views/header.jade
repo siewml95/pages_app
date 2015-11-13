@@ -1,0 +1,53 @@
+- function capitalize(string) {return string.charAt(0).toUpperCase() + string.slice(1);}
+body
+  nav.navbar.navbar-default
+    div.container-fluid
+      div.row
+        div.col-md-10.col-md-offset-1.header-container
+          div.col-md-3.col-sm-4.navbar-header.no-gutter
+            a(href="/")
+              h1.logo VOLO
+            button(type="button", class="navbar-toggle collapsed", data-toggle="collapse", data-target="#navbar", aria-expanded="false")
+              span.sr-only Toggle navigation
+              span.glyphicon.glyphicon-align-justify
+              span.navmenu &nbsp; Menu
+
+          .col-md-6.col-sm-8.no-gutter   
+            .navbar-collapse.collapse#navbar
+              ul.nav.navbar-nav.navbar-center
+                li
+                  a(href="/students") Student
+                li
+                  a(href="/nonprofits") Nonprofit
+                li
+                  a(href="/corporates") Corporate
+                li
+                  a(href="/universities") University       
+          .col-md-3.col-sm-12.no-gutter
+            if (!user)
+              div.navbar-collapse.no-gutter
+                ul.nav.navbar-nav.navbar-right
+                  li
+                    a(href="/login", class="navbar-link") Login
+                  li
+                    a(href="/register", class="navbar-link") Register
+            if (user)
+              div.navbar-collapse.no-gutter
+                ul.nav.navbar-nav.navbar-right.welcome
+                  li.user.dropdown
+                    //- img(src="/images/placeholder.png")
+                    a(class="text-right dropdown-toggle", data-toggle="dropdown", href="#") Welcome #{user.username} 
+                      span.caret
+                    ul.dropdown-menu
+                      li
+                        a(href="/volunteer/edit") Volunteer Profile
+                      if (user.usertype[1] && user.usertype[1] == 'admin')
+                        li
+                          a(href="/activity/admin/list") List of activities
+                        li
+                          a(href="/activity/admin/validation") Validation of activities
+                        li
+                          a(href="/skill/add_new_skill") Add a new skill
+                      li
+                        a(href="/logout") Logout
+            

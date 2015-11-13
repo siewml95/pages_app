@@ -1,0 +1,405 @@
+extends ../layout
+append head-css
+  link(href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css", rel="stylesheet")
+  link(href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css", rel="stylesheet")
+  link(href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css", rel="stylesheet")
+append head-js
+  //- inline editing
+  script(src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js")
+  
+  //- combodate
+  script(src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js")
+
+  //- select2
+  script(src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.min.js")
+
+  //- number input
+  script(src="//cdn.jsdelivr.net/bootstrap.formhelpers/1.8.2/js/bootstrap-formhelpers-countries.js")
+  
+  script(src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js")
+
+  //- for ajaxsubmit
+  script(src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+  
+  //- file input validation
+  script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js")
+    //- necesary to validate extension file
+  script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/additional-methods.min.js")
+  script(src="/javascripts/facebook.js")
+
+block content
+  -function format_date(date){
+  - var newDate = new Date(date);
+  - var y = newDate.getFullYear();
+  - var m = newDate.getMonth() + 1;
+  - var d = newDate.getDate();
+  - return y+'/'+m+'/'+d;
+  -}
+  -function bar_size(size){
+  -var barSize = Math.round(size/2);
+  -if(barSize >= 200) barSize = 100;
+  -return barSize + '%'
+  -}
+  -function color_opacity(size){
+  -var opacity = size/100;
+  -if(opacity >= 1) opacity = 1;
+  -if(opacity <= 0.1) opacity = 0.1;
+  -return opacity
+  -}
+  -function plurialize_reco(number){
+  -if (number == 1) return number + ' recommendation'
+  -else return number + ' recommendations'
+  -}
+  -function lowerToCapitalize(str){
+  -return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+  -}
+
+  .container-fluid.profile_container
+    .col-md-7.col-md-push-1.col-xs-12.col-sm-12.no-gutter_l
+      .row.row-centered
+        .col-md-12
+          .col-md-12.col-sm-12.col-xs-12.content.general
+            //- .alert.alert-info.alert-dismissible(role="alert")
+            //-   button(type="button", class="close", data-dismiss="alert", aria-label="Close")
+            //-     span(aria-hidden="true") &times;
+            //-   p Yo
+            .col-md-2.user-bg.text-center
+              a(href="#", id="changeImg", class="text-center", data-toggle="modal", data-target="#uploadModal")
+                -if (volunteer.photo.cropedPath)
+                  img(src="#{volunteer.photo.cropedPath}")
+                -else
+                  img(src="#{volunteer.photo.originalPath}")
+                p Change photo
+            .col-md-7
+              h3
+                a(href="#", id="first_name", data-type="text", data-pk="#{volunteer._id}", data-id="first_name", data-placeholder="First Name", data-url="/volunteer/update", data-title="Enter first name") #{volunteer.first_name}
+                | 
+                a(href="#", id="last_name", data-type="text", data-pk="#{volunteer._id}", data-id="last_name", data-placeholder="Last Name", data-url="/volunteer/update", data-title="Enter last name") #{volunteer.last_name}
+              - if (volunteer.gender)
+                a(href="#", data-value="#{volunteer.gender}", id="gender", data-type="select", data-pk="#{volunteer._id}", data-id="gender", data-placeholder="Gender", data-url="/volunteer/update", data-title="Enter gender")  
+              - else
+                a(href="#", id="gender", data-type="select", data-pk="#{volunteer._id}", data-id="gender", data-placeholder="Gender", data-url="/volunteer/update", data-title="Enter gender")  
+              p 
+                - if (volunteer.birthdate)
+                  a(href="#", data-value="#{format_date(volunteer.birthdate)}" id="birthdate", data-type="combodate", data-pk="#{volunteer._id}", data-id="birthdate", data-url="/volunteer/update", data-title="Enter your birth date")
+                - else
+                  a(href="#", id="birthdate", data-type="combodate", data-pk="#{volunteer._id}", data-id="birthdate", data-url="/volunteer/update", data-title="Enter your birth date")
+            .col-md-12.col-xs-12.col-sm-12
+            .col-md-6.col-sm-6.col-xs-12.info
+              h4 Contacts
+              p 
+                - if (volunteer.email)
+                  a(href="#", data-value="#{volunteer.email}", id="email", data-type="email", data-pk="#{volunteer._id}", data-id="email", data-placeholder="Email", data-url="/volunteer/update", data-title="Enter email address")
+                - else
+                  a(href="#", data-value="", id="email", data-type="email", data-pk="#{volunteer._id}", data-id="email", data-placeholder="Email", data-url="/volunteer/update", data-title="Enter email address")
+              p 
+                - if (volunteer.phone)
+                  a(href="#", data-value="#{volunteer.phone}", id="phone", data-type="text", data-pk="#{volunteer._id}", data-id="phone", data-placeholder="Phone Number", data-url="/volunteer/update", data-title="Enter phone number")  
+                - else
+                  a(href="#", data-value="", id="phone", data-type="text", data-pk="#{volunteer._id}", data-id="phone", data-placeholder="Phone Number", data-url="/volunteer/update", data-title="Enter phone number")  
+            .col-md-5.col-md-offset-1.col-sm-5.col-sm-offset-1.col-xs-12.info
+              h4 &nbsp;
+              p 
+                - if (volunteer.country)
+                  a(href="#", data-inputclass="country_sm", data-value="#{volunteer.country}", id="country", data-type="select", data-pk="#{volunteer._id}", data-id="country", data-placeholder="Country", data-url="/volunteer/update", data-title="Enter Country")  
+                - else
+                  a(href="#", data-inputclass="country_sm", data-value="#", id="country", data-type="select", data-pk="#{volunteer._id}", data-id="country", data-placeholder="Country", data-url="/volunteer/update", data-title="Enter Country")  
+              p 
+                - if (volunteer.city)
+                  a(href="#", data-value="#{volunteer.city}", id="city", data-type="text", data-pk="#{volunteer._id}", data-id="city", data-placeholder="City", data-url="/volunteer/update", data-title="Enter City")  
+                - else
+                  a(href="#", data-value="", id="city", data-type="text", data-pk="#{volunteer._id}", data-id="city", data-placeholder="City", data-url="/volunteer/update", data-title="Enter City")  
+            .col-md-12.col-xs-12.col-sm-12.info
+              h4 Position
+              p 
+                - if (volunteer.position)
+                  a(href="#", data-value="#{volunteer.position}", id="position", data-type="select", data-pk="#{volunteer._id}", data-id="position", data-placeholder="Position", data-url="/volunteer/update", data-title="Enter position", required)  
+                - else
+                  a(href="#", data-value="", id="position", data-type="select", data-pk="#{volunteer._id}", data-id="position", data-placeholder="Position", data-url="/volunteer/update", data-title="Enter position", required)   
+                - if (volunteer.position == 'student' && volunteer.university)
+                  |&nbsp;at 
+                  a(href="#", data-value="#{volunteer.university._id}", id="university", data-type="select", data-pk="#{volunteer._id}", data-id="university", data-placeholder="University", data-url="/volunteer/update", data-title="Enter university")  
+                  a(href="#", class="little", data-toggle="modal", data-target="#universityModal") Add a new university
+                  p 
+                  - if (volunteer.graduate)
+                    a(href="#", data-value="#{volunteer.graduate}", id="graduate", data-type="select", data-pk="#{volunteer._id}", data-id="graduate", data-placeholder="Graduate", data-url="/volunteer/update", data-title="Enter graduate")
+                  - else
+                    a(href="#", data-value="", id="graduate", data-type="select", data-pk="#{volunteer._id}", data-id="graduate", data-placeholder="Graduate", data-url="/volunteer/update", data-title="Enter graduate")  
+                  |&nbsp;in 
+                  - if (volunteer.area_of_study)
+                    a(href="#", data-value="#{volunteer.area_of_study}", id="area_of_study", data-type="select", data-pk="#{volunteer._id}", data-id="area_of_study", data-placeholder="Area Of Study", data-url="/volunteer/update", data-title="Enter Area Of Study")
+                  - else
+                    a(href="#", data-value="", id="area_of_study", data-type="select", data-pk="#{volunteer._id}", data-id="area_of_study", data-placeholder="Area Of Study", data-url="/volunteer/update", data-title="Enter Area Of Study")
+                  - if (volunteer.degree)
+                    |&nbsp;(
+                    a(href="#", data-value="#{volunteer.degree}", id="degree", data-type="text", data-pk="#{volunteer._id}", data-id="degree", data-placeholder="Degree", data-url="/volunteer/update", data-title="Enter Degree")
+                    |)
+                  - else
+                    |&nbsp;(
+                    a(href="#", data-value="", id="degree", data-type="text", data-pk="#{volunteer._id}", data-id="degree", data-placeholder="Degree", data-url="/volunteer/update", data-title="Enter Degree")
+                    |)
+
+                  - if (volunteer.graduation_year)
+                    |&nbsp;in 
+                    a(href="#", data-value="#{volunteer.graduation_year}", id="graduation_year", data-type="number", data-min="2014", data-max="2020", data-pk="#{volunteer._id}", data-id="graduation_year", data-placeholder="Graduation Year", data-url="/volunteer/update", data-title="Enter graduation year")
+                  - else
+                    |&nbsp;in 
+                    a(href="#", data-value="", id="graduation_year", data-type="number", data-pk="#{volunteer._id}", data-id="graduation_year", data-min="2014", data-max="2020", data-placeholder="Graduation Year", data-url="/volunteer/update", data-title="Enter graduation year")
+                
+                - else if (volunteer.position == 'student' && !volunteer.university)
+                  |&nbsp;at 
+                  a(href="#", data-value="", id="university", data-type="select", data-pk="#{volunteer._id}", data-id="university", data-placeholder="University", data-url="/volunteer/update", data-title="Enter university")  
+                  a(href="#", class="little", data-toggle="modal", data-target="#universityModal") Add a new university
+                  p 
+                  - if (volunteer.graduate)
+                    a(href="#", data-value="#{volunteer.graduate}", id="graduate", data-type="select", data-pk="#{volunteer._id}", data-id="graduate", data-placeholder="Graduate", data-url="/volunteer/update", data-title="Enter graduate")
+                  - else
+                    a(href="#", data-value="", id="graduate", data-type="select", data-pk="#{volunteer._id}", data-id="graduate", data-placeholder="Graduate", data-url="/volunteer/update", data-title="Enter graduate")  
+                  |&nbsp;in 
+                  - if (volunteer.area_of_study)
+                    a(href="#", data-value="#{volunteer.area_of_study}", id="area_of_study", data-type="select", data-pk="#{volunteer._id}", data-id="area_of_study", data-placeholder="Area Of Study", data-url="/volunteer/update", data-title="Enter Area Of Study")
+                  - else
+                    a(href="#", data-value="", id="area_of_study", data-type="select", data-pk="#{volunteer._id}", data-id="area_of_study", data-placeholder="Area Of Study", data-url="/volunteer/update", data-title="Enter Area Of Study")
+                  - if (volunteer.degree)
+                    |&nbsp;(
+                    a(href="#", data-value="#{volunteer.degree}", id="degree", data-type="text", data-pk="#{volunteer._id}", data-id="degree", data-placeholder="Degree", data-url="/volunteer/update", data-title="Enter Degree")
+                    |)
+                  - else
+                    |&nbsp;(
+                    a(href="#", data-value="", id="degree", data-type="text", data-pk="#{volunteer._id}", data-id="degree", data-placeholder="Degree", data-url="/volunteer/update", data-title="Enter Degree")
+                    |)
+
+
+                  - if (volunteer.graduation_year)
+                    |&nbsp;graduating in  
+                    a(href="#", data-value="#{volunteer.graduation_year}", id="graduation_year", data-type="number", data-min="2014", data-max="2020", data-pk="#{volunteer._id}", data-id="graduation_year", data-placeholder="Graduation Year", data-url="/volunteer/update", data-title="Enter graduation year")
+                  - else
+                    |&nbsp;graduating in 
+                    a(href="#", data-value="", id="graduation_year", data-type="number", data-pk="#{volunteer._id}", data-id="graduation_year", data-min="2014", data-max="2020", data-placeholder="Graduation Year", data-url="/volunteer/update", data-title="Enter graduation year")
+
+                - if (volunteer.position == 'employed' && volunteer.company)
+                  |&nbsp;at 
+                  a(href="#", data-value="#{volunteer.company}", id="company", data-type="text", data-pk="#{volunteer._id}", data-id="company", data-placeholder="Company", data-url="/volunteer/update", data-title="Enter Company")  
+                - else if (volunteer.position == 'employed' && !volunteer.company)
+                  |&nbsp;at 
+                  a(href="#", data-value="", id="company", data-type="text", data-pk="#{volunteer._id}", data-id="company", data-placeholder="Company", data-url="/volunteer/update", data-title="Enter Company")  
+            .col-md-12.col-xs-12.col-sm-12.info
+              h4 About me
+              p
+                - if (volunteer.about)
+                  a(href="#", data-value="#{volunteer.about}", id="about", data-type="textarea", data-pk="#{volunteer._id}", data-id="about", data-placeholder="About me", data-url="/volunteer/update", data-title="About yourself")  
+                - else
+                  a(href="#", data-value="", id="about", data-type="textarea", data-pk="#{volunteer._id}", data-id="about", data-placeholder="About me", data-url="/volunteer/update", data-title="About yourself")  
+
+            .col-md-12.col-xs-12.col-sm-12.info.text-right
+              em
+                span.glyphicon.glyphicon-arrow-right 
+                a(href="/volunteer/#{volunteer._id}") &nbsp;See your public profile
+
+      -if (volunteer_skills.skills.length > 0)
+        .row.row-centered
+          .col-md-12
+            .col-md-12.content.skills
+              .col-md-12
+                h2 Skills
+                each skills in volunteer_skills
+                  each skill in skills
+                    .col-md-12.no-gutter_l.barContainer
+                      .bar(style="width:#{bar_size(skill.sum_hours)};background-color:rgba(162, 255, 0, #{color_opacity(skill.sum_hours)})")
+                        span #{lowerToCapitalize(skill._id.name)}
+
+      .row.row-centered
+        .col-md-12
+          .col-md-12.content.XP
+            .col-md-12
+              h2 Experiences
+
+            .col-md-12.XP_form 
+              h3 Add an experience to your volunteer profile
+              include ./_formXP.jade
+            
+            .col-md-12
+              each experience in experiences
+                p.charity_name #{experience.nonprofit.name}
+                p 
+                  a.xp_description(href="#", data-value="#{experience.description}", id="description", data-type="textarea", data-pk="#{experience._id}", data-id="description", data-placeholder="Description", data-url="/experience/update", data-title="Enter Experience Description")
+                - if (experience.recommendation_number > 0)
+                    p <u><a href="#" class="reco">#{plurialize_reco(experience.recommendation_number)}</a></u>
+                h5 Activities
+                each activity, i in experience.activities
+                  if (i%2==0) 
+                    != "<div class='row'>"
+                      .col-md-6.col-sm-6.col-xs-12.activity(data-id="#{activity._id}", data-validated="#{activity.validated}")
+                        .col-md-12.col-sm-12.col-xs-12.grey_background
+                          p Role: <em>#{lowerToCapitalize(activity.role.name)}</em>
+                          p Skills: <em>
+                            each skill, i in activity.skills
+                              if (i == 0)
+                                span #{lowerToCapitalize(skill.name)}
+                              else
+                                span , #{lowerToCapitalize(skill.name)}
+                            </em>
+                          p <em>#{activity.hours} Hours</em>
+                          p.validation #{activity.validated}
+
+                    if ((i == experience.activities.length-1) && (experience.activities.length%2 != 0))
+                      != "</div>"
+
+                  else
+                    .col-md-6.col-sm-6.col-xs-12.activity(data-id="#{activity._id}", data-validated="#{activity.validated}")
+                      .col-md-12.col-sm-12.col-xs-12.grey_background
+                        p Role: <em>#{lowerToCapitalize(activity.role.name)}</em>
+                        p Skills: <em>
+                          each skill, i in activity.skills
+                            if (i == 0)
+                              span #{lowerToCapitalize(skill.name)}
+                            else
+                              span , #{lowerToCapitalize(skill.name)}
+                          </em>
+                        p <em>#{activity.hours} Hours</em>
+                        p.validation #{activity.validated}
+                    != "</div>"
+                
+                .row
+                  .col-md-6.col-sm-6.col-xs-12
+                    .col-md-12.grey_background.add_activity.text-center
+                      span.add_new.col-md-12.col-sm-12.col-xs-12 Add new activity with #{experience.nonprofit.name}
+                      include ./_formActivity.jade
+              
+            .col-md-12.add
+              a(href="#", id="addXP")
+                p.text-center Add a new organisation to your profile
+
+      -if (recommendations.recommendations.length > 0)
+        .row.row-centered
+          .col-md-12
+            .col-md-12.content.recommendation
+              .col-md-12
+                h2 Recommendations
+
+                each recommendation in recommendations.recommendations
+                  .col-md-12.col-sm-12.col-xs-12.no-gutter
+                    p.manager_name #{recommendation.recommendation.referee_name} from #{recommendation.nonprofit} 
+                    p 
+                      img(src="/images/quote.svg")
+                      i #{recommendation.recommendation.recommendation}
+                  .col-md-12.col-sm-12.col-xs-12.break
+
+    .col-md-3.col-md-push-1.col-sm-3.col-sm-push-1.col-xs-12
+      .row.row-centered
+        .col-md-12.col-sm-12.col-xs-12.content
+          .col-md-12.col-sm-12.col-xs-12
+            h2 Goals
+            
+            h5 Total hours volunteered
+              br
+            -var hours = 0;
+            each experience in experiences
+              - hours += experience.totalHours
+            .col-md-1.col-sm-1.col-xs-1.totalHoursGoal
+              p 500
+            .col-md-10.col-sm-10.col-xs-10.totalHoursContainer
+              .col-md-push-2.col-md-8.col-sm-push-2.col-sm-8.col-xs-12#totalGoal
+                p.text-center
+                  em #{hours} hours
+
+            .col-md-12.col-sm-12.col-xs-12.break
+
+            h5 Hours volunteered <em>this week</em>
+            canvas(id="w_goal", height="230px")
+            p.w_goal_achieved You've reached your weekly goal!!
+            em.w_goal_achieved Share your progress
+              br
+              a(href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.volo.org.uk/volunteer/#{volunteer._id}" data-count="none" data-text="I hit my weekly volunteering goal on #VOLO ! Join the volunteering community @volo4change to create #socialimpact") Tweet
+              script.
+                !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+              br
+              .fb-share-button(data-href="https://www.volo.org.uk/volunteer/#{volunteer._id}" data-layout="button")
+
+    .modal.fade#uploadModal(tabindex='-1')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button(type="button" class="close" data-dismiss="modal") &times;
+            p Change your profile photo
+          .modal-body
+            span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate.hidden.text-center.col-md-12.col-sm-12.col-xs-12
+            form(id="uploadForm", enctype="multipart/form-data", action="/volunteer/photo", method="post")
+              input(type="file", name="userPhoto", value="Upload new photo")
+              input(type="submit", value="Change photo", name="submit", class="btn btn-primary modal-submit")
+    
+    .modal.fade#universityModal(tabindex='-1')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button(type="button" class="close" data-dismiss="modal") &times;
+            p Add a new University
+          .modal-body
+            p If you are not finding the university you study at, please just add its name here. We'll review this information. <br/>
+            form(id="universityForm", action="/university/new", method="post")
+              input.col-md-12.col-sm-12.col-xs-12(type="text", name="name", autofocus, placeholder="University name", required)
+              input(type="hidden", name="suggested_by_volunteer", value="true")
+              input(type="hidden", name="created_by", value="#{volunteer._id}")
+              input(type="submit", value="Add new university", name="submit", class="btn btn-primary modal-submit")
+
+    .modal.fade#nonprofitModal(tabindex='-1')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button(type="button" class="close" data-dismiss="modal") &times;
+            p Add a new Nonprofit
+          .modal-body
+            p If you are not finding the nonprofit you volunteered with, please just add its name here. We'll review this information. <br/>
+            form(id="nonprofitForm", action="/nonprofit/new", method="post")
+              input.col-md-12.col-sm-12.col-xs-12(type="text", name="name", autofocus, placeholder="Nonprofit name", required)
+              input(type="hidden", name="suggested_by_volunteer", value="true")
+              input(type="hidden", name="created_by", value="#{volunteer._id}")
+              input(type="submit", value="Add new nonprofit", name="submit", class="btn btn-primary modal-submit")
+
+    .modal.fade#skillModal(tabindex='-1')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button(type="button" class="close" data-dismiss="modal") &times;
+            p Request to add a new skill
+          .modal-body
+            p If you are not finding the skill you want, you can request us to add. We will review the information as soon as possible. <br/>
+            form(id="skillForm", action="/skill/new_request", method="post")
+              input.col-md-12.col-sm-12.col-xs-12(type="text", name="name", autofocus, placeholder="Skill name", required)
+              input(type="hidden", name="requested_by", value="#{volunteer._id}")
+              input(type="submit", value="Request to add new skill", name="submit", class="btn btn-primary modal-submit")
+
+    .modal.fade#roleModal(tabindex='-1')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button(type="button" class="close" data-dismiss="modal") &times;
+            p Add a new Role
+          .modal-body
+            p If you are not finding the role you want, you can add it's name here. We'll review this information. <br/>
+            form(id="roleForm", action="/role/new", method="post")
+              input.col-md-12.col-sm-12.col-xs-12(type="text", name="name", autofocus, placeholder="Role name", required)
+              input(type="hidden", name="suggested_by_volunteer", value="true")
+              input(type="hidden", name="created_by", value="#{volunteer._id}")
+              input(type="submit", value="Add new role", name="submit", class="btn btn-primary modal-submit")
+
+    .modal.fade#editActivityModal(tabindex='-1')
+      .modal-dialog
+        .modal-content.col-md-12.col-sm-12.col-xs-12
+          .modal-header
+            button(type="button" class="close" data-dismiss="modal") &times;
+            p Edit an activity
+          .modal-body.col-md-12.col-sm-12.col-xs-12
+            include ./_activityModal.jade
+
+    .modal.fade#checkActivityModal(tabindex='-1')
+      .modal-dialog
+        .modal-content.col-md-12.col-sm-12.col-xs-12
+          .modal-header
+            button(type="button" class="close" data-dismiss="modal") &times;
+            p Activity Details
+          .modal-body.col-md-12.col-sm-12.col-xs-12
+            include ./_activityDetailsModal.jade
+            
+
+  script(src="/javascripts/editProfilePage.min.js")

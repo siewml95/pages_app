@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  if messages.error
+      .alert.alert-danger
+        div= messages.error
+    if messages.info
+      .alert.alert-info
+        div= messages.info
+    if messages.success
+      .alert.alert-success
+        div= messages.success
+  div.container-fluid
+    div.row.row-centered
+      div.col-md-10.col-md-offset-1.content
+        div.col-md-12.col-sm-12.col-xs-12
+          h3 Login
+          if (info != '')
+            .alert.alert-danger
+              div= info
+          form(role='form', action="/login", method="post", class="col-md-7 no-gutter col-sm-12 col-xs-12")
+            span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate.hidden.text-center.col-md-8.col-sm-8.col-xs-12
+            .form-group.col-md-8.col-sm-8.col-xs-12.no-gutter
+              input.form-control(type='text', name="username", placeholder='Username')
+            .form-group.col-md-8.col-sm-8.col-xs-12.no-gutter
+              input.form-control(type='password', name="password", placeholder='Password')
+            .form-group.col-md-12.col-sm-12.col-xs-12.no-gutter
+              button.btn.btn-primary(type='submit') Login
+              a.btn.btn-link(href='/forgot') Forgot Password?
+              a.btn.btn-link(href='/forgot_username') Forgot Username?
+
+          script(src="/javascripts/loginPage.min.js")

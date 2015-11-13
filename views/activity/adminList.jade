@@ -1,0 +1,99 @@
+extends ../layout
+
+block content
+  -function format_date(date){
+  - var newDate = new Date(date);
+  - if(isNaN(newDate.getFullYear())) return '';
+  - var y = newDate.getFullYear();
+  - var m = newDate.getMonth();
+  - var month = new Array(); 
+  - month[0] = 'January';
+  - month[1] = 'February';
+  - month[2] = 'March';
+  - month[3] = 'April';
+  - month[4] = 'May';
+  - month[5] = 'June';
+  - month[6] = 'July';
+  - month[7] = 'August';
+  - month[8] = 'September';
+  - month[9] = 'October';
+  - month[10] = 'November';
+  - month[11] = 'December'; 
+  - var m = month[newDate.getMonth()];
+  - var d = newDate.getDate();
+  - if (d <10) d= '0'+d;
+  - return m +' '+d+', '+y;
+  -}
+  -function plurialize(number){
+  -if (number == 1) return number + ' hour'
+  -else return number + ' hours'
+  -}
+  -function lowerToCapitalize(str){
+  -return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+  -}
+
+  div.container-fluid
+    div.row.row-centered
+      div.col-md-10.col-md-offset-1.col-xs-12.content
+        .col-md-12.col-sm-12.col-xs-12
+          if (activities.length == 0)
+            h4.col-md-12.text-center 
+              |No activity to show
+          else
+            h3 Activity list
+            p
+              |Here is a list of activities, order by date of creation/modification.
+              br
+            .col-md-12.break
+            each activity_date in activities
+              .col-md-12.col-sm-12.col-xs-12.no-gutter
+                h3.space #{format_date(activity_date._id)}
+              each activity in activity_date.activities
+                .col-md-12.col-sm-12.col-xs-12.validation_pending
+                  .col-md-1.col-sm-1.col-xs-12.user-md.text-center
+                    -if (activity.volunteer.photo.cropedPath)
+                      img(src="#{activity.volunteer.photo.cropedPath}")
+                    -else
+                      img(src="#{activity.volunteer.photo.originalPath}")
+                  .col-md-7.col-sm-7.col-xs-12
+                    a(href="/volunteer/#{activity.volunteer._id}", target="_blank")
+                      p.volunteer_name Volunteer: #{activity.volunteer.first_name} #{activity.volunteer.last_name} 
+                    - if (activity.volunteer.position == 'student' && activity.volunteer.university)
+                      p <em>#{capitalize(activity.volunteer.position)} at #{activity.volunteer.university.name}</em>
+                    - else if (activity.volunteer.position == 'student' && !activity.volunteer.university)
+                      p <em>#{capitalize(activity.volunteer.position)}</em>
+                    - else if (activity.volunteer.position == 'employed' && activity.volunteer.company)
+                      p <em>#{capitalize(activity.volunteer.position)} at #{activity.volunteer.company}</em>
+                    - else if (activity.volunteer.position == 'employed' && !activity.volunteer.company)
+                      p <em>#{capitalize(activity.volunteer.position)}</em>
+                    - else if (activity.volunteer.position == 'unemployed')
+                      p <em>Volunteer</em>
+                    p Email: 
+                      a(href="mailto:#{activity.volunteer.email}") #{activity.volunteer.email}
+                    p Volunteered on the <em>#{format_date(activity.start_date)}</em> during <em>#{plurialize(activity.hours)}</em>
+                    - if (activity.skills.length > 0)
+                      p Skills acquired: 
+                        each skill, i in activity.skills
+                          em
+                            if (i == 0)
+                              span #{lowerToCapitalize(skill.name)}
+                            else
+                              span , #{lowerToCapitalize(skill.name)}
+                    p Status of his activity is <em>#{activity.validated}</em>
+                  .col-md-4.col-sm-4.col-xs-12
+                    p.volunteer_name.text-left Referee: #{activity.referee.name}
+                    em
+                      a(href="mailto:#{activity.referee.email}") #{activity.referee.email} 
+                    p Tel: <em>#{activity.referee.phone_number}</em>
+                    p Validated on: <em>#{format_date(activity.validation_date)}</em>
+                    p Validated via admin: <em>#{activity.validated_via_email}</em>
+                  -if (activity.validated == 'declined')
+                    .col-md-12.col-sm-12.col-xs-12
+                      br
+                      p Decline Reason: <em>#{activity.decline_reason}</em>
+
+                
+            .col-md-12.col-sm-12.col-xs-12.text-center
+              if (pages > 1)
+                  ul.pagination
+                    != createPagination(pages, page)

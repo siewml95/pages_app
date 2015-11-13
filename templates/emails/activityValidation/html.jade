@@ -1,0 +1,98 @@
+-function format_date(date){
+- var newDate = new Date(date);
+- var y = newDate.getFullYear();
+- var month = new Array(); 
+- month[0] = '01';
+- month[1] = '02';
+- month[2] = '03';
+- month[3] = '04';
+- month[4] = '05';
+- month[5] = '06';
+- month[6] = '07';
+- month[7] = '08';
+- month[8] = '09';
+- month[9] = '10';
+- month[10] = '11';
+- month[11] = '12'; 
+- var m = month[newDate.getMonth()];
+- var d = newDate.getDate();
+- if (d <10) d= '0'+d;
+- return d+'/'+m+'/'+y;
+-}
+-function plurialize(number){
+-if (number == 1) return number + ' hour'
+-else return number + ' hours'
+-}
+-function plurialize_activities(number){
+-if (number == 1) return number + ' other new activity';
+-else return number + ' other new activities';
+-}
+doctype transitional
+html(xmlns='http://www.w3.org/1999/xhtml')
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title VOLO: Volunteer Approval Needed
+  body
+    table(align='center', cellpadding='0', cellspacing='0', width='100%', height='100%')
+      tr
+        td(align='center', valign='top', style='background-color:#ffffff', width='100%')
+          center
+            table.w320(cellspacing='0', cellpadding='0', width='600')
+              tr
+                td(align='center', valign='top')
+                  table.force-full-width(cellspacing='0', cellpadding='0')
+                    tr
+                      td.logo(style="background-color:black")
+                        br
+                        a(href='#')
+                          img(src='http://www.volo.org.uk/images/volo_logo.png', alt='Logo')
+                        h4 Social Responsibility is EVERYONE’s responsibility
+              tr
+                td(align='center', valign='top')
+                  table.force-full-width(cellspacing='0', cellpadding='0')
+                    tr
+                      td
+                        br
+                    tr
+                      td
+                        h4 Dear #{referee.name},
+                        p <a href="http://www.volo.org.uk">VOLO</a>  is a social enterprise dedicated to encouraging and supporting volunteering.
+                        p 
+                          |We have received a request to validate a volunteer activity that was completed with your organisation.  
+                          |We would very much appreciate your help in reviewing the below activity and either
+                          em Validating 
+                          | or 
+                          em Declining
+                          |&nbsp;this request:
+                    tr.colored
+                      td(align='center', valign='top')
+                        h3 #{volunteer.name}
+                        p Volunteered on the #{format_date(start_date)} for #{plurialize(hours)}.
+                        p 
+                          |Skills Acquired: 
+                          br
+                          <em>#{skills}</em>.
+                      td 
+                        a.btn-primary(href="#{url}") Validate
+                    -if (count > 0)
+                      tr
+                        td(align='center', valign='top')
+                          p 
+                            |Other volunteers have been adding activities with your nonprofit.
+                            br
+                            |On our website, you will also be able to validate #{plurialize_activities(count)}.
+                    tr
+                      td(align='center', valign='top')
+                        p Approving volunteering hours, helps individuals to track their community involvement and enhance their employability. 
+                        p If you have any questions regarding this request, please do not hesitate to <a href="mailto:melissa@volo.org.uk">contact us</a>!
+                        h4 We greatly appreciate your help in supporting the volunteer community.
+                        p <i>The VOLO team</i>
+                        p
+                          br
+                        p 
+                          |If you are interested in creating a free non-profit profile on VOLO to promote your volunteering opportunities, 
+                          |please contact Melissa Mitchell at 
+                          a(href="mailto:melissa@volo.org.uk ") Melissa@volo.org.uk 
+
+
